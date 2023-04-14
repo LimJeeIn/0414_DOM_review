@@ -9,15 +9,58 @@
   <body>
     <script>
       // 1. for문을 사용하여 0부터 10미만의 정수 중에서 짝수만을 작은 수 부터 출력하시오
-      const result = 0;
-      // const result = [];
-
-      for (let i = 0; i < 10; i++) {
-        if (i % 2 == 0) {
-          result.push(i);
+      //   for (let i = 0; i < 10; i++) {
+      //     if (i % 2 == 0) {
+      //       console.log(i);
+      //     }
+      //   }
+      //2. 1부터 20 미만의 정수 중에서 2 또는 3의 배수인 수의 총합을 구하시오.
+      //   let result = 0;
+      //   for (let i = 1; i < 20; i++) {
+      //     if (i % 2 == 0 || i % 3 == 0) {
+      //       result += i;
+      //     }
+      //   }
+      //   console.log(result);
+      //3. 두 개의 주사위를 던졌을 때, 눈의 합이 6이 되는 모든 경우의 수를 출력하시오.
+      //   let result = 0;
+      //   for (let i = 1; i < 7; i++) {
+      //     for (let j = 1; j < 7; j++) {
+      //       if (i + j == 6) {
+      //         result += i + j;
+      //         console.log(i, j);
+      //       }
+      //     }
+      //   }
+      //   console.log(result);
+      //4. for문을 중첩(?)으로 두번 사용하여 구구단을 출력해보세요
+      //   for (let i = 2; i < 10; i++) {
+      //     for (let j = 1; j < 10; j++) {
+      //       console.log(`${i} x ${j} = ${i * j}`);
+      //     }
+      //   }
+      //5. 스위치문
+      function switchOfStuff(val) {
+        var answer = '';
+        switch (val) {
+          case 'a':
+            answer = 'apple';
+            break;
+          case 'b':
+            answer = 'bird';
+            break;
+          case 'c':
+            answer = 'cat';
+            break;
+          default:
+            answer = 'stuff';
+            break;
         }
+        return answer;
       }
-      console.log(result);
+
+      console.log(switchOfStuff(1)); // 출력되는값? stuff
+      console.log(switchOfStuff('c')); // 출력되는값? cat
     </script>
   </body>
 </html>
