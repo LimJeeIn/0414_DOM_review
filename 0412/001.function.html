@@ -60,14 +60,244 @@
       //   }
       //   console.log(factorial(5));
 
-      function reverse(txt) {
-        if (txt.length <= 1) {
-          return txt;
-        }
-        // console.log(txt.slice(1)) + txt[0];
-        return reverse(txt.slice(1)) + txt[0];
+      // 1. 아규먼트가 순서대로 들어가는 함수의 특성
+      // function 함수(a = 10, b = 20, c = 30) {
+      //   return a + b + c;
+      // }
+      // 함수(); // 60
+      // 함수(1000); // 1050
+      // 함수(1000, 2500); // 3530
+      // 함수(1000, 2500, 3000); // 6500
+      // 함수((c = 3000)); // 3050
+      // 함수((a = 1000), (c = 3000)); // 4020이 아닌 순서대로 값이 들어가 4030이 된다
+      // 함수((a = 1000), (b = 3000), (c = 2500)); // 6500 // 함수에서 값을 뒤바꾸면서 줄수 없다
+      // 함수((a = 1000), (c = 2500), (b = 3000)); // 6500
+
+      // 2. 화살표 함수
+      // 이렇게 코드를 작성하면 인자 x, y를 받는 함수 func이 만들어집니다.
+      // 함수 func는 화살표(=>) 우측의 표현식(expression)을 평가하고, 평가 결과를 반환합니다.
+      // function func(x, y) {
+      //   //         (x, y) -> 파라미터,매개변수,인자
+      //   return x + y;
+      // }
+
+      // console.log(func(3, 4)); // -> 아규먼트, 인수
+
+      // // 위 함수를 화살표 함수로 작성하면 아래와 같습니다.
+      // // 함수는 선언 시 function 키워드를 화살표 기호로 대체하여 표현할 수 있습니다.
+      // // 화살표 함수는 선언 시 제목을 정할 수 없기 때문에 표현식으로 사용해야 합니다.
+      // let func = (x, y) => x + y;
+      // console.log(func(3, 4));
+
+      // // 만악 함수 실행시 전달하는 인자가 한 개라면 소괄호를 생략할 수 있습니다.
+      // let func2 = (x) => x + 10;
+      // console.log(func2(3));
+
+      // // 화살표 함수 내부에서 한 줄 표현식만 반환한다면 return 키워드를 생략해도 됩니다.
+      // let func3 = (x) => x + 10;
+
+      // let 결과 = func3(2);
+
+      // console.log(결과);
+
+      // 3. 스코프란? 변수에 접근할 수 있는 유효범위, 변수의 접근성과 생존 기간을 제어하는 ‘생존 범위’를 의미
+      //  스코프 체이닝이란 ? 스코프가 어떻게 연결(chain)되고 있는지 보여주는 것,
+      // 해당 영역에 찾는 변수가 없으면 계속해서 상위 스코프를 따라 올라간다 window 까지 따라 올라가도 없으면 error
+      let x = 100; // 블록{} 밖에 선언하면 전역에서 접근할수 있는 변수가 된다 = 전역변수
+      function 함수() {
+        let y = 20; // 블록{} 안에 선언시 밖에서 접근 불가능 = 지역변수
+        console.log(x); // x가 없으니 위로 올라가서 찾는다 = 스코프 체이닝
       }
-      console.log(reverse('hello'));
+      함수(); // 100 -> 변수 x는 전역변수이다
+
+      // 함수1 의 값은 ?
+      let a = 10; // a=10,b=10,함수1 의 각각의 메모리공간이 있다
+      let b = 10;
+      function 함수1() {
+        // 함수1은 a=20, b=20,함수2에 연결되어있다
+        let a = 20;
+        let b = 20;
+        function 함수2() {
+          //함수2는 a=30 에 연결되어있다
+          // 여기서 만약 변수 c를 찾으면 스코프 체이닝(올라가며 c를 찾는다)한다
+          let a = 30;
+          console.log(a, b, c);
+        }
+        함수2();
+      }
+      함수1(); // 30 20
+
+      // 4. 호이스팅이란? 함수 안에 있는 선언들을 모두 끌어올려서 해당 함수 유효 범위의 최상단에 선언하는 것
+      // 변수나 함수 선언문이 해당 스코프의 최상단으로 끌어올려지는 현상을 말합니다.
+      // 즉, 코드에서 변수나 함수를 선언하기 전에 해당 변수나 함수를 사용할 수 있는 것처럼 보이는 현상을 의미
+
+      // var로 선언했을때의 결과는?
+      // 호이스팅시 변수의 선언과 초기화(undefined 으로) 같이 실행시켜버림. 변수에 undefined을 할당해버림
+      console.log(foo1); // undefined
+      var foo1 = 2;
+      console.log(foo1); // 2
+
+      // let으로 선언했을때의 결과는?
+      let foo = 1; // 첫번째 스코프
+      {
+        // 일시적 사각지대- Temporal Dead Zone(TDZ)에 빠지기 때문
+        // foo2가 선언이 되기전까지는 그 전은 일시적으로 죽은 존이라서 foo2를 쓸수 없게한다
+        console.log(foo2);
+        let foo2 = 2;
+        // console.log(foo2); //결과: 2
+      }
+
+      // var 는 함수만 지역변수로 호이스팅되고 나머지(if문, for문 등)는 다 전역변수로 올려버린다
+      var foo3 = 1;
+      {
+        console.log(foo3); // 1
+        var foo3 = 2;
+        // console.log(foo3); // 2
+      }
+      // 5. 호이스팅 2
+      // 콘솔의 결과는?
+      console.log(add1(10, 20)); // 30
+      console.log(add2(10, 20)); // 30
+      console.log(mul1); // undefined
+      // console.log(mul1(10, 20)); // not a function
+      // console.log(mul2); // Cannot access 'mul2' before initialization
+      // console.log(mul2(10, 20)); // 위와 같은 애러
+      // console.log(mul3) // mul3 is not defined, 호이스팅이 안되었기 때문
+
+      function add1(x, y) {
+        return x + y;
+      }
+
+      function add2(x, y) {
+        return x + y;
+      }
+
+      // 호이스팅시 변수의 선언과 초기화(undefined 으로) 같이 실행시켜버림. 변수에 undefined을 할당해버림
+      var mul1 = function (a, b) {
+        return a * b;
+      }; // undefined
+
+      // 초기화 전에 'mul2'에 접근할 수 없습니다.
+      let mul2 = function (a, b) {
+        return a * b;
+      };
+
+      // 6. 함수의 주의사항
+      // test1과 test2의 값은?
+      let test1 = [10, 20, 30];
+      let test2 = 100;
+
+      // 값변경1 함수는 결과값이 [100,20,30]으로 나오게 하라
+      // 많이 헷갈려 꼭 기억
+      function 값변경1(arr) {
+        arr[0] = 100;
+      }
+      값변경1(test1);
+      console.log(test1); // [100, 20, 30]
+
+      // 값변경2 에서 value 와 test2이 가르키는 값은?
+      function 값변경2(value) {
+        value = 1000;
+        console.log(value);
+      }
+      값변경2(test2); // test2가 파라미터인 value로 들어가 메모리값을 가르킨다 // 후에 value만 메모리값이 1000을 가르키게 바뀐다
+      console.log(test2); // 여전히 100을 가르킴
+
+      // 7. 클로저란 ? - 폐쇠된 공간 안에 데이터에 접근하기 위한 테크닉
+      // 클로저는 외부함수(포함하고 있는)의 변수에 접근할 수 있는 내부 함수를 일컫습니다.
+      // 자신이 생성될 때의 환경(Lexical environment)을 기억하는 함수
+      // 각 콘솔의 값은?
+      function 제곱(x) {
+        function 승수(y) {
+          console.log(x, y);
+          return y ** x;
+        }
+        return 승수;
+      }
+
+      let 제곱2 = 제곱(2); // 2 제곱해주는 함수 // x
+      let 제곱3 = 제곱(3); // 3 제곱해주는 함수
+      let 제곱4 = 제곱(4); // 4 제곱해주는 함수
+
+      console.log(제곱2(2)); // 4  // y
+      console.log(제곱2(3)); // 9
+      console.log(제곱2(4)); // 16
+
+      console.log(제곱3(2)); // 8
+      console.log(제곱3(3)); // 27
+      console.log(제곱3(4)); // 64
+
+      console.log(제곱4(2)); // 16
+      console.log(제곱4(3)); // 81
+      console.log(제곱4(4)); // 256
+
+      console.log(제곱(2)(4)); // 16
+
+      // 8. map
+      // Map 객체는 키-값 쌍을 가지는 객체 자료형의 한 종류
+      // map에 어떠한 값들을 넣어보고 접근해보고
+      // 어떠한 값이 있는지 확인하고 그 값을 제거해보시오
+      const data = new Map()
+        .set('name', 'jeein')
+        .set('age', 10)
+        .set('height', 180);
+
+      data.get('name'); // 'name' 이라는 key로 위에서 'jeein'이라는 value를 가져오겠다
+      data.has('age'); // true
+      data.delete('age'); // true
+
+      // 9. this
+      // this 란 ? 자신을 호출한 객체, 자신이 생성할 객체
+      // 객체를 가리키는 자기 참조 변수이다
+      let 호텔 = [
+        {
+          이름: '하나호텔',
+          위치: '제주도 제주시 001',
+          가격: { A: 50000, B: 30000, C: 15000 },
+          방의개수: 50,
+          예약자수: 25,
+          남은방의개수: function () {
+            return this.방의개수 - this.예약자수; //  this -> 호텔[0]
+          },
+        },
+        {
+          이름: '둘호텔',
+          위치: '제주도 제주시 002',
+          가격: { A: 100000, B: 60000, C: 30000 },
+          방의개수: 100,
+          예약자수: 30,
+          남은방의개수: function () {
+            return this.방의개수 - this.예약자수; //  this -> 호텔[1]
+          },
+        },
+        {
+          이름: '셋호텔',
+          위치: '제주도 제주시 003',
+          가격: { A: 80000, B: 50000, C: 30000 },
+          방의개수: 120,
+          예약자수: 80,
+          남은방의개수: function () {
+            return this.방의개수 - this.예약자수; //  this -> 호텔[2]
+          },
+        },
+      ];
+      console.log(호텔[0].남은방의개수()); // 25
+      console.log(호텔[1].남은방의개수()); // 70
+      console.log(호텔[2].남은방의개수()); // 40
+
+      // 10.
+      // JSON문자열을 자바스크립트 객체로 변환하시오
+
+      //- JSON.parse(): JSON문자열을 자바스크립트 객체로 변환합니다.(문자열 => 객체)
+      const json1 = '{"result":true, "count":42}';
+      const obj = JSON.parse(json1);
+      console.log(obj); // {result: true, count: 42}
+
+      // 자바스크립트 객체를 JSON문자열로 변환하시오
+      // - JSON.stringify() : 자바스크립트 객체를 JSON문자열로 변환합니다.(객체 => 문자열)
+      const json2 = { result: true, count: 42 };
+      const result = JSON.stringify(json2); // {"result":true,"count":42}
+      console.log(result);
     </script>
   </body>
 </html>
